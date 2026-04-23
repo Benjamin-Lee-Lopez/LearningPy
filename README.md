@@ -1,0 +1,1 @@
+This is where any learning projects or sandboxxing will go, so I don't have to make a new random repository for every project. Tread no further, traveler, because these projects will not only be limited, they will hopefully be uninteresting compared to the rest of my GitHub.
