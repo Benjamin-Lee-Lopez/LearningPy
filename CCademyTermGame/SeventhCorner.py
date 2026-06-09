@@ -15,6 +15,16 @@ class Character():
         self.age = age
         self.name = name
 
+        self.skills = []
+
+    def add_skill(self, new_skill): #new_skill should be in the form of dictionary, to match other key value pairs
+        if new_skill not in self.skills:
+            self.skills.append(new_skill)
+        elif new_skill[0] != self.skills[new_skill]:
+            self.skills[new_skill] = new_skill[0]
+        
+
+
 class Player(Character):
     def __init__(self, statline, name, occupation, reputation, origin, age):
         self.strength = statline['Strength']
@@ -31,6 +41,12 @@ class Player(Character):
         self.origin = origin
         self.age = age
 
+        self.skills = []
+
+    def add_skill(self, new_skill):
+        Character.add_skill(self, new_skill)
+
+
 class Enemy(Character):
     def __init__(self, statline, name, specialization):
         self.strength = statline['Strength']
@@ -44,6 +60,10 @@ class Enemy(Character):
         self.name = name
         self.specialization = specialization
 
+        self.skills = []
+#----------------------------------------------------------
+# Functions
+#----------------------------------------------------------
 
 def create_pc():
     print('Fearful of the world? Or too busy justifying its grace? Or rather, do you favor the antiquity of it all?')
@@ -66,12 +86,15 @@ def create_pc():
             print('Anything')
 
             main_pc = Player(statline, str(pc_name), str(pc_occupation), int(pc_reputation), str(pc_origin), int(pc_age))
-            
+            main_pc.add_skill('win_button')
+
             return main_pc
         except ValueError:
             print("Enter a number 0-99, start over.")
         except Exception as e:
             print(e)
+
+        
 
 def create_end_condition():
     statline = {'Strength': 0, 'Dexterity': 0 ,'Resolve': 0, 'Charisma': 0, 'Wit': 0, 'Composure': 0, 'Arcane': 0}
@@ -82,7 +105,12 @@ def create_end_condition():
 
     enemy_pc = Enemy(statline, enemy_name, spec_info_list)
 
+    enemy_pc.add_skill('mock')
+
     return enemy_pc #Currently only setting this up as a function to randomize the end game condition, will add different conditions later
+
+def battle(o_char, d_char): #o_char standing for offensive char, the character that began the engagement. d_char meaning defending character, on the other end of the interaction
+    print(o_char.__class__.__name__ + " is engaged with " + d_char.name + ".")
 
     
 def world_draft():
@@ -95,12 +123,25 @@ def world_draft():
 
     ec = create_end_condition() #ec meaning end condition
 
-    print('Your opponent is ' + ec.__name__ + ', simply win the fight.')
+    print('Your opponent is ' + ec.__class__.__name__ + ', simply win the fight.')
 
-def world_begin():
-    pass
+    world_begin(mc, ec)
 
+def world_begin(player, end_condition):
+    game_state = 'explore'
+    while game_state == 'explore':
+        player_action = input('What would you like to do? ') 
+
+        #if player_action is in ____ #this will later function as a check on document with listed options for exploring actions, similar to skillset actions
+
+        #for now, change game state to end
+        game_state = 'end_condition_win'
+    
+    print('You have reached the end, will you be remembered?') #Choice, later on, given here will allow the player to select yes or no, and have something be left behind by their character
+
+#----------------------------------------------------------
+# Run
+#----------------------------------------------------------
 
 world_draft()
 
-world_begin()
